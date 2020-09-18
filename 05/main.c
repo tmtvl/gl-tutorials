@@ -178,9 +178,7 @@ deinit ()
 }
 
 int
-main (argc, argv)
-     int argc;
-     char **argv;
+main (int argc, char **argv)
 {
   int quit, result;
   SDL_Event ev;

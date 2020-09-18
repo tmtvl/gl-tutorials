@@ -1,6 +1,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 #include <GL/glu.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 typedef struct tex

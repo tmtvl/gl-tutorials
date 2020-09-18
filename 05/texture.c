@@ -13,10 +13,8 @@ make_texture ()
 }
 
 int
-load_texture_from_pixels (texture, pixels, width, height)
-     Texture *texture;
-     GLuint *pixels;
-GLuint width, height;
+load_texture_from_pixels (Texture *texture, GLuint *pixels,
+			  GLuint width, GLuint height)
 {
   int success;
   GLenum error;
@@ -56,8 +54,7 @@ GLuint width, height;
 }
 
 void
-free_texture (texture)
-     Texture *texture;
+free_texture (Texture *texture)
 {
   if (texture->id)
     glDeleteTextures (1, &texture->id);
@@ -66,10 +63,7 @@ free_texture (texture)
 }
 
 void
-render_texture (texture, x, y)
-  Texture *texture;
-  GLfloat x;
-  GLfloat y;
+render_texture (Texture *texture, GLfloat x, GLfloat y)
 {
   if (texture->id)
     {
