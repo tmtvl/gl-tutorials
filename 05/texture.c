@@ -1,20 +1,20 @@
 #include "texture.h"
 
-Texture
+Texture *
 make_texture ()
 {
-  Texture texture;
+  Texture *texture = (Texture *) malloc (sizeof (Texture));
 
-  texture.id = 0;
-  texture.width = 0;
-  texture.height = 0;
+  (*texture).id = 0;
+  (*texture).width = 0;
+  (*texture).height = 0;
 
   return texture;
 }
 
 int
 load_texture_from_pixels (texture, pixels, width, height)
-     Texture texture;
+     Texture *texture;
      GLuint *pixels;
 GLuint width, height;
 {
@@ -23,14 +23,15 @@ GLuint width, height;
 
   success = 1;
 
-  free_texture (texture);
+  if (texture->id)
+    texture->id = 0;
 
-  texture.width = width;
-  texture.height = height;
+  texture->width = width;
+  texture->height = height;
 
-  glGenTextures (1, &texture.id);
+  glGenTextures (1, &texture->id);
 
-  glBindTexture (GL_TEXTURE_2D, texture.id);
+  glBindTexture (GL_TEXTURE_2D, texture->id);
 
   glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
 		GL_UNSIGNED_BYTE, pixels);
@@ -56,42 +57,37 @@ GLuint width, height;
 
 void
 free_texture (texture)
-     Texture texture;
+     Texture *texture;
 {
-  if (texture.id)
-    {
-      glDeleteTextures (1, &texture.id);
+  if (texture->id)
+    glDeleteTextures (1, &texture->id);
 
-      texture.id = 0;
-    }
-
-  texture.height = 0;
-  texture.width = 0;
+  free (texture);
 }
 
 void
 render_texture (texture, x, y)
-  Texture texture;
+  Texture *texture;
   GLfloat x;
   GLfloat y;
 {
-  if (texture.id)
+  if (texture->id)
     {
       glLoadIdentity ();
 
       glTranslatef (x, y, 0.f);
 
-      glBindTexture (GL_TEXTURE_2D, texture.id);
+      glBindTexture (GL_TEXTURE_2D, texture->id);
 
       glBegin (GL_QUADS);
       glTexCoord2f (0.f, 0.f);
       glVertex2f (0.f, 0.f);
       glTexCoord2f (1.f, 0.f);
-      glVertex2f (texture.width, 0.f);
+      glVertex2f (texture->width, 0.f);
       glTexCoord2f (1.f, 1.f);
-      glVertex2f (texture.width, texture.height);
+      glVertex2f (texture->width, texture->height);
       glTexCoord2f (0.f, 1.f);
-      glVertex2f (0.f, texture.height);
+      glVertex2f (0.f, texture->height);
       glEnd ();
     }
 }

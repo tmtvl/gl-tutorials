@@ -10,13 +10,13 @@ typedef struct tex
   GLuint height;
 } Texture;
 
-Texture make_texture ();
+Texture *make_texture ();
 
-int load_texture_from_pixels (Texture texture, GLuint *pixels, GLuint
+int load_texture_from_pixels (Texture *texture, GLuint *pixels, GLuint
 			      width, GLuint height);
 
-void free_texture (Texture texture);
+void free_texture (Texture *texture);
 
-void render_texture (Texture texture, GLfloat x, GLfloat y);
+void render_texture (Texture *texture, GLfloat x, GLfloat y);
 
 #endif

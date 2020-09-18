@@ -4,7 +4,7 @@
 SDL_Window *g_window = NULL;
 SDL_GLContext g_context;
 
-Texture g_checker_board_texture;
+Texture *g_checker_board_texture;
 
 int
 sdl_init ()
@@ -111,6 +111,8 @@ load_media ()
   GLuint checkerboard[CHECKERBOARD_PIXEL_COUNT];
   int i;
 
+  g_checker_board_texture = make_texture ();
+
   for (i = 0; i < CHECKERBOARD_PIXEL_COUNT; i++)
     {
       GLubyte *colors = (GLubyte *) &checkerboard[i];
@@ -156,8 +158,8 @@ render ()
 {
   glClear (GL_COLOR_BUFFER_BIT);
 
-  GLfloat x = (SCREEN_WIDTH - g_checker_board_texture.width) / 2.f;
-  GLfloat y = (SCREEN_HEIGHT - g_checker_board_texture.height) / 2.f;
+  GLfloat x = (SCREEN_WIDTH - g_checker_board_texture->width) / 2.f;
+  GLfloat y = (SCREEN_HEIGHT - g_checker_board_texture->height) / 2.f;
 
   render_texture (g_checker_board_texture, x, y);
 }
@@ -165,6 +167,8 @@ render ()
 void
 deinit ()
 {
+  free_texture (g_checker_board_texture);
+
   SDL_GL_DeleteContext (g_context);
 
   SDL_DestroyWindow (g_window);
